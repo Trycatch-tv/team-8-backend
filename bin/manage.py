@@ -9,7 +9,7 @@ if __name__ == "__main__":
     sys.path.insert(0, project_root)
 
     # Establecer la variable de entorno DJANGO_SETTINGS_MODULE
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "back_core.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "back_core.settings.base")
 
     # Ejecutar el comando de gestión de Django
     try:
