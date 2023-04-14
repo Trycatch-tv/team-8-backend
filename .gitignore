@@ -8,3 +8,6 @@ __pycache__/
 media/
 staticfiles/
 db.sqlite3
+
+# Ignorar las migraciones de Django
+/migrations/
