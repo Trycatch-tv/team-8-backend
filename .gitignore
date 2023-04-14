@@ -1,1 +1,10 @@
-./back_core/__pycache__
+*.env
+
+# Ignorar archivos de caché
+__pycache__/
+*.pyc
+
+# Ignorar archivos generados automáticamente
+media/
+staticfiles/
+db.sqlite3
