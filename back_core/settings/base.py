@@ -20,6 +20,7 @@ LOCAL_APPS=[
 
 THIRDS_APPS=[
     'rest_framework',
+    'dotenv',
 ]
 
 INSTALLED_APPS = list(chain(DJANGO_APPS,LOCAL_APPS,THIRDS_APPS))
