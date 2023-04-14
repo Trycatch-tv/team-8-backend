@@ -1,15 +1,19 @@
 from dotenv import load_dotenv
 
 from pathlib import Path
-from os import path
+from os import path,getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 
-SECRET_KEY = env('SECRET_KEY')
 
+SECRET_KEY = str(getenv('SECRET_KEY'))
+
+
+if not(SECRET_KEY):
+    exit(1)
 
 
 ALLOWED_HOSTS = [
