@@ -9,13 +9,19 @@ class estudianteModel(serializers.Serializers):
 
 
 class profesorModel(serializers.Serializers):
+    
+    
     pass
 
 class cursoModel(serializers.Serializers):
     #name= models.CharField(max_length=90)
     #created_at = models.DateTimeField(auto_now=True)
     #valoraciones = models.ForeignKey(estudianteModel)
-    
-    
+    name = models.CharField(max_length=90)
+    creted_at = models.DateField(auto_now=True)
+    valoraciones = models.ForeignKey(estudianteModel)
+    id_estudiante = models.ForeignKey(estudianteModel)
+    id_profesor = models.ForeignKey(profesorModel)     
+    estado = models.CharField(max_length=15)
     
     pass
