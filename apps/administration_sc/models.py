@@ -30,6 +30,7 @@ class estudianteModel(serializers.Serializers):
         return self.nombre
 
 class profesorModel(serializers.Serializers):
+<<<<<<< HEAD
     nombre = models.CharField(max_length=90)
     correo = models.EmailField(max_length=60)
     telefono = models.IntegerField()
@@ -41,11 +42,21 @@ class profesorModel(serializers.Serializers):
     estado = models.CharField(max_length=15)
     
     
+=======
+    
+    
+    pass
+
+>>>>>>> 87177d012751b46b03d9dac14c0a37c462419268
 class cursoModel(serializers.Serializers):
     #name= models.CharField(max_length=90)
     #created_at = models.DateTimeField(auto_now=True)
     #valoraciones = models.ForeignKey(estudianteModel)
-    
-    
+    name = models.CharField(max_length=90)
+    creted_at = models.DateField(auto_now=True)
+    valoraciones = models.ForeignKey(estudianteModel)
+    id_estudiante = models.ForeignKey(estudianteModel)
+    id_profesor = models.ForeignKey(profesorModel)     
+    estado = models.CharField(max_length=15)
     
     pass
