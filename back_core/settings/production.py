@@ -1,32 +1,14 @@
-#queda para produccion solamente
-DEBUG = False
+DEBUG = True
 
-#Database Seria Postgresql
+#Database Production
 
-"""
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'administration_sc',
+        'USER': 'postgresql',
+        'PASSWORD': 'dentreaca1',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
-}"""
-
-"""DATABASES = {
-
-    'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': ‘<db_name>’,
-
-        'USER': '<db_username>',
-
-        'PASSWORD': '<password>',
-
-        'HOST': '<db_hostname_or_ip>',
-
-        'PORT': '<db_port>',
-
-    }
-
-}"""
+}
