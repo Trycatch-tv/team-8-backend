@@ -45,8 +45,8 @@ class cursoModel(models.Model):
     codigo_curso = models.CharField(max_length=30,blank=True)
     created_at = models.DateField(auto_now=True)
     valoraciones = models.ForeignKey('estudianteModel', on_delete=models.CASCADE, related_name='curso_estudent_vc')
-    id_estudiante = models.ForeignKey('estudianteModel', on_delete=models.CASCADE , related_name='curso_estudent')
-    id_profesor = models.ForeignKey('profesorModel', on_delete=models.CASCADE, related_name='curso_teacher')     
+    id_estudiante = models.ForeignKey('estudianteModel', on_delete=models.CASCADE , related_name='curso_estudent', null=True,blank=True)
+    id_profesor = models.ForeignKey('profesorModel', on_delete=models.CASCADE, related_name='curso_teacher', null=True,blank=True)     
     estado = models.CharField(max_length=15)
     
     
@@ -59,8 +59,8 @@ class profesorModel(models.Model):
     telefono = models.IntegerField()
     descripcion = models.TextField()
     area_especializacion = models.CharField(max_length=50)
-    id_estudiante = models.ForeignKey('estudianteModel', on_delete=models.CASCADE, related_name='estudent_teacher')
-    id_curso = models.ForeignKey(cursoModel, on_delete=models.CASCADE, related_name='curso_teacher')
+    id_estudiante = models.ForeignKey('estudianteModel', on_delete=models.CASCADE, related_name='estudent_teacher',null=True,blank=True)
+    id_curso = models.ForeignKey(cursoModel, on_delete=models.CASCADE, related_name='curso_teacher',null=True,blank=True)
     created_at = models.DateTimeField(auto_now=True)
     estado = models.CharField(max_length=15)
     
@@ -78,8 +78,8 @@ class estudianteModel(models.Model):
     telefono = models.IntegerField()
     estado = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now=True)
-    id_curso = models.ForeignKey(cursoModel, on_delete=models.CASCADE , related_name='estudent_curso')
-    id_profesor = models.ForeignKey(profesorModel, on_delete=models.CASCADE, related_name='estudiante_teacher')
+    id_curso = models.ForeignKey(cursoModel, on_delete=models.CASCADE , related_name='estudent_curso',null=True,blank=True)
+    id_profesor = models.ForeignKey(profesorModel, on_delete=models.CASCADE, related_name='estudiante_teacher',null=True,blank=True)
     
     def __str__(self) -> str:
         return self.nombre
