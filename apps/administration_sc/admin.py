@@ -4,13 +4,13 @@ from .models import *
 
 
 @admin.register(estudianteModel)
-class studenAdmin(admin.ModelAdmin):
+class studen_Admin(admin.ModelAdmin):
     pass
 @admin.register(profesorModel)
-class teacherAdmin(admin.ModelAdmin):
+class teacher_Admin(admin.ModelAdmin):
     pass
 @admin.register(cursoModel)
-class cursoAdmin(admin.ModelAdmin):
+class curso_Admin(admin.ModelAdmin):
     pass
     
 
