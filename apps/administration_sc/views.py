@@ -6,12 +6,14 @@ from .models import *
 
 # Create your views here.
 
-
-
-class people_list(generics.ListCreateAPIView):
-    queryset = Person.objects.all()
-    serializer_class= PersonSerializer
-
-class studentlist():
+class student_list():
     queryset = estudianteModel.objects.all()
-    serializer_class = studentSerializer
+    serializer_class = student_serializers
+
+class teacher_list():
+    queryset = profesorModel.objects.all()
+    serializer_class = teacher_serializers
+    
+class course_list():
+    queryset = cursoModel.objects.all()
+    serializer_class = course_serializers
