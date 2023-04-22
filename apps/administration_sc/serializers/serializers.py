@@ -16,3 +16,4 @@ class course_serializers(serializers.ModelSerializer):
         model = cursoModel
         fields = '__all__'
         
+
