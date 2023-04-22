@@ -63,7 +63,7 @@ class profesorModel(models.Model):
     id_curso = models.ForeignKey(cursoModel, on_delete=models.CASCADE, related_name='curso_teacher',null=True,blank=True)
     created_at = models.DateTimeField(auto_now=True)
     estado = models.CharField(max_length=15)
-    contrasena = models.CharField(max_length=90)
+    contrasena = models.CharField(max_length=90, blank=True,null=True)
     
     
     
@@ -88,3 +88,7 @@ class estudianteModel(models.Model):
         return self.nombre
     
     
+
+
+
+  
