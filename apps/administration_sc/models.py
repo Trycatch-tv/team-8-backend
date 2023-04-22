@@ -27,7 +27,7 @@ class ciudad_choices(models.TextChoices):
     OPCION_11 = 'Panama', _('Panama')
 
 class cursoModel(models.Model):
-    name = models.CharField(max_length=90)
+    nombre = models.CharField(max_length=90)
     categoria = models.CharField(
         choices=categoria_choices.choices,
         default=categoria_choices.OPCION_1,
