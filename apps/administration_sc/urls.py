@@ -3,9 +3,14 @@ from django.urls import path
 from .views import *
 
 urlpatterns=[
-        path('list_students/',student_list.as_view(),name="students-people"),
-        path('list_courses/',course_list.as_view(),name="courses-people"),
-        path('list_teachers/',teacher_list.as_view(),name="teachers-people"),
+        path('add_student/', add_student.as_view(), name='add_student'),
+        path('add_teacher/', add_teacher.as_view(), name='add_teacher'),
+        path('add_course/', add_course.as_view(), name='add_course'),
+
+        #List Urls Actions
+        path('list_students/',student_list.as_view(),name="students_people"),
+        path('list_courses/',course_list.as_view(),name="courses_people"),
+        path('list_teachers/',teacher_list.as_view(),name="teachers_people"),
         #Update Urls Actions
         path('update_student/<int:pk>/', update_student.as_view(), name='update_student'),
         path('update_teacher/<int:pk>/', update_teacher.as_view(), name='update_teacher'),
