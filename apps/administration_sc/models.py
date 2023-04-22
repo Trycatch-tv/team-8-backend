@@ -80,7 +80,7 @@ class estudianteModel(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     id_curso = models.ForeignKey(cursoModel, on_delete=models.CASCADE , related_name='estudent_curso',null=True,blank=True)
     id_profesor = models.ForeignKey(profesorModel, on_delete=models.CASCADE, related_name='estudiante_teacher',null=True,blank=True)
-    contrasena= models.CharField(max_length=90);
+    contrasena= models.CharField(max_length=90)
     
     def __str__(self) -> str:
         return self.nombre
