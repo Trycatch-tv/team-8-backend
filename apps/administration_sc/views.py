@@ -11,9 +11,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.hashers import check_password as check_password_hasher
 from rest_framework.views import APIView
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password, make_password
+
+
 # Create your views here.
 
 from .backend_auth.backend_student import EstudianteBackend
@@ -66,9 +67,25 @@ class add_student(CreateAPIView):
     queryset = estudianteModel.objects.all()
     serializer_class = student_serializers
 
+    def perform_create(self, serializer):
+        # Obtener la contraseña del serializer
+        contrasena = serializer.validated_data.get('contrasena')
+        
+        contrasena_hasheada = make_password(contrasena)
+        
+        serializer.save(contrasena=contrasena_hasheada)
+
 class add_teacher(CreateAPIView):
     queryset = profesorModel.objects.all()
     serializer_class = teacher_serializers
+    
+    def perform_create(self, serializer):
+        # Obtener la contraseña del serializer
+        contrasena = serializer.validated_data.get('contrasena')
+        
+        contrasena_hasheada = make_password(contrasena)
+        
+        serializer.save(contrasena=contrasena_hasheada)
     
 class add_course(CreateAPIView):
     queryset = cursoModel.objects.all()
