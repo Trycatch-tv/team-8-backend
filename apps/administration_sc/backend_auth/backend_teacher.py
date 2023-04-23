@@ -1,10 +1,11 @@
 from django.contrib.auth.backends import BaseBackend
+from django.contrib.auth.hashers import check_password
 from ..models import profesorModel
 class TeacherBackend(BaseBackend):
     def authenticate_teacher(self, request, correo=None, contrasena=None):
         try:
             profesor = profesorModel.objects.get(correo=correo)
-            if profesor.contrasena == contrasena:
+            if check_password(contrasena, profesor.contrasena):
                 return profesor
         except profesorModel.DoesNotExist:
             return None
