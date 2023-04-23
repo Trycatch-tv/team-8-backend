@@ -137,7 +137,7 @@ class StudentLoginView(APIView):
         print(estudiante)
 
         if estudiante is not None:
-            return Response({'message': 'Inicio de sesión exitoso.'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Inicio de sesión exitoso.', 'correo':student.correo}, status=status.HTTP_200_OK,)
     
         else:
             return Response({'message': 'El correo electrónico o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -150,7 +150,7 @@ class TeacherLoginView(APIView):
         password = request.data.get('contrasena')
 
         if email is None or password is None:
-            return Response({'message': 'Por favor ingrese un correo y una contraseña.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Por favor ingrese un correo y una contraseña.','correo':profesor.correo}, status=status.HTTP_400_BAD_REQUEST)
 
         # Busca el estudiante con el correo electrónico proporcionado
         try:
