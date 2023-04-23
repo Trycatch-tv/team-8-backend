@@ -19,7 +19,6 @@ urlpatterns=[
         path('delete_student/<int:pk>/', delete_student.as_view()),
         path('delete_teacher/<int:pk>/', delete_teacher.as_view()),
         path('delete_course/<int:pk>/', delete_course.as_view()),
-        
         #Login 
         path('user-login/', UserLoginAPIView.as_view(), name='user_login_api'),
         path('student-login/', StudentLoginView.as_view(), name='student_login_api'),
