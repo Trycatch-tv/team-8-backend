@@ -21,6 +21,7 @@ LOCAL_APPS=[
 THIRDS_APPS=[
     'rest_framework',
     'dotenv',
+    'corsheaders',
 ]
 
 INSTALLED_APPS = list(chain(DJANGO_APPS,LOCAL_APPS,THIRDS_APPS))
@@ -36,9 +37,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  
+    'corsheaders.middleware.CorsMiddleware',
 ]
-
+CORS_ORIGIN_WHITELIST = [
+    'https://www.example.com',
+    'https://localhost:4200',
+]
 
 
 TEMPLATES = [
