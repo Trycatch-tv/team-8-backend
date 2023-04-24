@@ -11,7 +11,7 @@ load_dotenv()
 
 SECRET_KEY = str(getenv('SECRET_KEY'))
 
-ALLOWED_HOSTS=['.vercel.app']
+ALLOWED_HOSTS=['*']
 
 if not(SECRET_KEY):
     exit(1)
