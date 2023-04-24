@@ -1,6 +1,6 @@
 from .config_vars import BASE_DIR
 
-DEBUG = False
+DEBUG = True
 
 
 DATABASES = {
