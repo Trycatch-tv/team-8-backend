@@ -11,7 +11,6 @@ load_dotenv()
 
 SECRET_KEY = str(getenv('SECRET_KEY'))
 
-ALLOWED_HOSTS=['*']
 
 if not(SECRET_KEY):
     exit(1)
@@ -37,7 +36,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ORIGIN_ALLOW_ALL =False
 
 
 # Static files (CSS, JavaScript, Images)
