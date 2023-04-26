@@ -3,7 +3,8 @@ from rest_framework.generics import DestroyAPIView,UpdateAPIView,RetrieveUpdateA
 from rest_framework.decorators import api_view
 from .serializers.serializers import *
 from .models import *
-import hashlib 
+from rest_framework.permissions import IsAuthenticated,AllowAny
+
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
@@ -14,6 +15,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import check_password, make_password
 
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -47,20 +49,42 @@ class update_teacher(RetrieveUpdateAPIView):
     
 #DELETE ACTIONS
     
+
+
+
+"""
 class delete_student(DestroyAPIView):
     queryset = estudianteModel.objects.all()
     serializer_class = student_serializers
     
     
-class delete_teacher(UpdateAPIView):
+class delete_teacher(DestroyAPIView):
     queryset = profesorModel.objects.all()
     serializer_class = teacher_serializers
+
+
     
-class delete_course(UpdateAPIView):
+class delete_course(DestroyAPIView):
     queryset = cursoModel.objects.all()
     serializer_class = course_serializers
     
+"""
 
+
+class delete_teacher(APIView):
+    permission_classes  = [AllowAny]
+
+    def delete(self, request, pk):
+        try:
+            my_model = profesorModel.objects.get(pk=pk)
+            my_model.delete()
+            response = HttpResponse(status=204)
+            response['Access-Control-Allow-Origin'] = 'http://localhost:4200'
+            return response
+        except profesorModel.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+            
 #ADD ACTIONS
 
 class add_student(CreateAPIView):
