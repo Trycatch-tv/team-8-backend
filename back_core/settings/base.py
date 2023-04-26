@@ -12,6 +12,7 @@ DJANGO_APPS=[
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 LOCAL_APPS=[
@@ -21,12 +22,13 @@ LOCAL_APPS=[
 THIRDS_APPS=[
     'rest_framework',
     'dotenv',
-    'corsheaders',
 ]
+
+
 
 INSTALLED_APPS = list(chain(DJANGO_APPS,LOCAL_APPS,THIRDS_APPS))
 
-
+ALLOWED_HOSTS = []
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -36,14 +38,47 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',  
+#    'django.contrib.sessions.middleware.SessionMiddleware',
+#    'django.contrib.auth.middleware.AuthenticationMiddleware',  
     'corsheaders.middleware.CorsMiddleware',
+#    "corsheaders.middleware.CorsPostCsrfMiddleware",
 ]
-CORS_ORIGIN_WHITELIST = [
-    'https://www.example.com',
-    'https://localhost:4200',
+
+
+
+
+CORS_ORIGIN_ALLOW_ALL = False  # Permitir solicitudes CORS solo desde dominios de lista blanca
+CORS_ORIGIN_WHITELIST = ['http://localhost:4200'] # Dominios de lista blanca para solicitudes CORS
+
+# Métodos HTTP permitidos por solicitudes CORS
+
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
+
+# Encabezados permitidos por solicitudes CORS
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'access-control-allow-origin',
+]
+
+
+
+#CORS_ALLOW_HEADERS = "access-control-allow-origin"
 
 
 TEMPLATES = [
