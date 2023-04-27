@@ -52,11 +52,11 @@ class delete_student(DestroyAPIView):
     serializer_class = student_serializers
     
     
-class delete_teacher(UpdateAPIView):
+class delete_teacher(DestroyAPIView):
     queryset = profesorModel.objects.all()
     serializer_class = teacher_serializers
     
-class delete_course(UpdateAPIView):
+class delete_course(DestroyAPIView):
     queryset = cursoModel.objects.all()
     serializer_class = course_serializers
     
