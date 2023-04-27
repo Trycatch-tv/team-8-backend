@@ -48,6 +48,7 @@ class cursoModel(models.Model):
     id_estudiante = models.ForeignKey('estudianteModel', on_delete=models.CASCADE , related_name='curso_estudent', null=True,blank=True)
     id_profesor = models.ForeignKey('profesorModel', on_delete=models.CASCADE, related_name='curso_teacher', null=True,blank=True)     
     estado = models.CharField(max_length=15)
+    description = models.TextField(blank=True, null=True)
     
     
     def __str__(self) -> str:
