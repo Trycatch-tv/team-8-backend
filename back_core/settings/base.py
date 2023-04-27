@@ -31,7 +31,7 @@ INSTALLED_APPS = list(chain(DJANGO_APPS,LOCAL_APPS,THIRDS_APPS))
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.CommonMiddleware',#-Aqui lo elimina y no bloquea angular note
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -39,12 +39,69 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',  
     'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsPostCsrfMiddleware",
 ]
+   
+"""
+NSTALLED_APPS = [
+    # ...
+    'corsheaders',
+    # ...
+]
+MIDDLEWARE = [
+    # ...
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    # ...
+]
+#CORS_ORIGIN_ALLOW_ALL = True
+"""
+
+
+
+               
+CORS_ORIGIN_ALLOW_ALL = False
+
+
+
+#CORS_ORIGIN_ALLOW = True
+
 CORS_ORIGIN_WHITELIST = [
-    'https://www.example.com',
-    'https://localhost:4200',
+    'http://localhost:4200',
 ]
 
+
+
+"""
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:4200",
+]
+
+CORS_ORIGIN_ALLOW_ALL= False
+"""
 
 TEMPLATES = [
     {
