@@ -165,3 +165,9 @@ class TeacherLoginView(APIView):
                 return Response({'message': 'Inicio de sesión exitoso.'}, status=status.HTTP_200_OK)
         else:
             return Response({'message': 'El correo electrónico o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        
+
+
+##Add View of one students return json data
+
