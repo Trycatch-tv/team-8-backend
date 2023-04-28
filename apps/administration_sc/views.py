@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import check_password, make_password
-
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -234,5 +234,50 @@ class TeacherCourse(ListAPIView):
         id_curso = self.kwargs['id']
         profesorModel.objects.filter(id_curso = id_curso)
         return profesorModel.objects.filter(id_curso=id_curso)
+    
+    
+
+class StudentCourse(ListAPIView):
+    serializer_class = course_serializers
+
+    def get_queryset(self):
+        id_student = self.kwargs['id']
+        cursoModel.objects.filter(id_student = id_student)
+        return cursoModel.objects.filter(id_student=id_student)
+    
+    
+@api_view(['POST'])
+def agregar_curso_profesor_a_estudiante(request):
+    # Obtener los datos del request
+    id_curso = request.data.get('cursos')
+    id_profesor = request.data.get('profesores')
+    id_estudiante = request.data.get('studiantes')
+    
+    
+    print(id_estudiante)
+    
+    curso = cursoModel.objects.get(id=id_curso)
+    curso.estudiantes.add(id_estudiante)
+
+    estudiante = estudianteModel.objects.get(id=id_estudiante)
+
+    # Agregar los objetos al estudiante
+    estudiante.cursos.add(id_curso)
+    estudiante.profesores.add(id_profesor[0])
+
+
+    # Retornar una respuesta exitosa
+    return Response({'mensaje': 'Curso y profesor agregados al estudiante exitosamente.'})
+
+
+
+
+
+class CursosEstudianteView(APIView):
+    def get(self, request, estudiante_id):
+        cursos = cursoModel.objects.filter(estudiantes=estudiante_id).values()
+        
+        return JsonResponse({'cursos': list(cursos)})
+    
 ##Add View of one students return json data
 
