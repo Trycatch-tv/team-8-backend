@@ -26,4 +26,6 @@ urlpatterns=[
         path('profesores/<int:id>/estudiantes/', TeacherStudent.as_view(), name='profesor-estudiantes'),
 
         #path('teacher-student/<int:pk>/', TeacherStudent.as_view(),name="teacher_student"),
+    path('api/estudiantes/<int:estudiante_id>/cursos/', CursosEstudianteView.as_view(), name='cursos_estudiante'),        path('agregar_curso_profesor_a_estudiante/', agregar_curso_profesor_a_estudiante, name='agregar_curso_profesor_a_estudiante'),
+            
 ]
