@@ -188,8 +188,6 @@ class StudentLoginView(APIView):
         else:
             return Response({'message': 'El correo electrónico o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
         
-        
-        
 class TeacherLoginView(APIView):
     def post(self, request):
         email = request.data.get('correo')
@@ -208,7 +206,7 @@ class TeacherLoginView(APIView):
         profesor = TeacherBackend.authenticate_teacher(self,request,correo=email,contrasena=password)
 
         if profesor is not None:
-                return Response({'message': 'Inicio de sesión exitoso.'}, status=status.HTTP_200_OK)
+                return Response({'message': 'Inicio de sesión exitoso.','correo':profesor.correo,'id':profesor.id,'rol':profesor.rol,'nombre':profesor.nombre}, status=status.HTTP_200_OK)
         else:
             return Response({'message': 'El correo electrónico o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
         
@@ -259,8 +257,14 @@ def agregar_curso_profesor_a_estudiante(request):
     curso = cursoModel.objects.get(id=id_curso)
     curso.estudiantes.add(id_estudiante)
 
+    
     estudiante = estudianteModel.objects.get(id=id_estudiante)
 
+
+    ##Agregar aca el teacher
+    teacher = profesorModel.objects.get(id=id_profesor[0])
+    teacher.estudiantes.add(id_estudiante)
+    
     # Agregar los objetos al estudiante
     estudiante.cursos.add(id_curso)
     estudiante.profesores.add(id_profesor[0])
@@ -270,6 +274,23 @@ def agregar_curso_profesor_a_estudiante(request):
     return Response({'mensaje': 'Curso y profesor agregados al estudiante exitosamente.'})
 
 
+@api_view(['POST'])
+def agregar_curso_profesor(request):
+    #Obtener los datos del request
+    id_teacher = request.data.get('profesores')
+    id_curso = request.data.get('cursos')
+    
+    
+    curso = cursoModel.objects.get(id=id_curso)
+    curso.profesores.add(id_teacher)
+    
+    teacher = profesorModel.objects.get(id=id_teacher)
+    teacher.cursos.add(id_curso)
+    
+    
+    return Response({'mensaje': 'Curso y profesor agregados al estudiante exitosamente.'})
+
+    
 
 
 
@@ -278,6 +299,20 @@ class CursosEstudianteView(APIView):
         cursos = cursoModel.objects.filter(estudiantes=estudiante_id).values()
         
         return JsonResponse({'cursos': list(cursos)})
+
+
+
+class ProfesorCursosView(APIView):
+    def get(self,request,profesor_id):
+        cursos = cursoModel.objects.filter(profesores=profesor_id).values()
+        
+        return JsonResponse({'courses_teacher':list(cursos)})
     
+    
+class ProfesorEstudiantes(APIView):
+    def get(self,request,profesor_id):
+        estudiantes = estudianteModel.objects.filter(profesores=profesor_id).values()
+        
+        return JsonResponse({'students':list(estudiantes)})
 ##Add View of one students return json data
 
