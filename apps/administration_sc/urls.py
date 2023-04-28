@@ -23,5 +23,7 @@ urlpatterns=[
         path('user-login/', UserLoginAPIView.as_view(), name='user_login_api'),
         path('student-login/', StudentLoginView.as_view(), name='student_login_api'),
         path('teacher-login/', TeacherLoginView.as_view(), name='teacher_login_api'),
+        path('profesores/<int:id>/estudiantes/', TeacherStudent.as_view(), name='profesor-estudiantes'),
 
+        #path('teacher-student/<int:pk>/', TeacherStudent.as_view(),name="teacher_student"),
 ]
