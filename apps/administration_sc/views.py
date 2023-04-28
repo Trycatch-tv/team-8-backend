@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.generics import DestroyAPIView,UpdateAPIView,RetrieveUpdateAPIView,ListCreateAPIView,CreateAPIView
+from rest_framework.generics import DestroyAPIView,UpdateAPIView,RetrieveUpdateAPIView,ListCreateAPIView,CreateAPIView,ListAPIView
 from rest_framework.decorators import api_view
 from .serializers.serializers import *
 from .models import *
@@ -106,10 +106,16 @@ class delete_course(DestroyAPIView):
 class add_student(CreateAPIView):
     queryset = estudianteModel.objects.all()
     serializer_class = student_serializers
+    
+    
 
     def perform_create(self, serializer):
+        
+        print("Heyyy Hp")
         # Obtener la contraseña del serializer
         contrasena = serializer.validated_data.get('contrasena')
+        
+        print(contrasena)
         
         contrasena_hasheada = make_password(contrasena)
         
@@ -177,7 +183,7 @@ class StudentLoginView(APIView):
         print(estudiante)
 
         if estudiante is not None:
-            return Response({'message': 'Inicio de sesión exitoso.', 'correo':student.correo}, status=status.HTTP_200_OK,)
+            return Response({'message': 'Inicio de sesión exitoso.', 'correo':student.correo,'nombre':student.nombre, 'id':student.id,'rol':student.rol}, status=status.HTTP_200_OK,)
     
         else:
             return Response({'message': 'El correo electrónico o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -209,5 +215,24 @@ class TeacherLoginView(APIView):
         
 
 
+# Helpers 
+
+
+
+class TeacherStudent(ListAPIView):
+    serializer_class = student_serializers
+
+    def get_queryset(self):
+        id_profesor = self.kwargs['id']
+        return estudianteModel.objects.filter(id_profesor=id_profesor)
+    
+
+class TeacherCourse(ListAPIView):
+    serializer_class = teacher_serializers
+
+    def get_queryset(self):
+        id_curso = self.kwargs['id']
+        profesorModel.objects.filter(id_curso = id_curso)
+        return profesorModel.objects.filter(id_curso=id_curso)
 ##Add View of one students return json data
 
