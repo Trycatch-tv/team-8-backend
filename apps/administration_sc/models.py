@@ -45,13 +45,14 @@ class cursoModel(models.Model):
     codigo_curso = models.CharField(max_length=30,blank=True)
     created_at = models.DateField(auto_now=True)
     valoraciones = models.ForeignKey('estudianteModel', on_delete=models.CASCADE, related_name='curso_estudent_vc')
-    id_estudiante = models.ForeignKey('estudianteModel', on_delete=models.CASCADE , related_name='curso_estudent', null=True,blank=True)
-    id_profesor = models.ForeignKey('profesorModel', on_delete=models.CASCADE, related_name='curso_teacher', null=True,blank=True)     
+    estudiantes= models.ManyToManyField('estudianteModel',blank=True,null=True)
+    profesores = models.ManyToManyField('profesorModel',blank=True,null=True)
     estado = models.CharField(max_length=15)
+    description = models.TextField(blank=True, null=True)
     
     
     def __str__(self) -> str:
-        return self.nombre
+        return str(self.id)
 
 class profesorModel(models.Model):
     nombre = models.CharField(max_length=90)
@@ -59,8 +60,8 @@ class profesorModel(models.Model):
     telefono = models.IntegerField()
     descripcion = models.TextField()
     area_especializacion = models.CharField(max_length=50)
-    id_estudiante = models.ForeignKey('estudianteModel', on_delete=models.CASCADE, related_name='estudent_teacher',null=True,blank=True)
-    id_curso = models.ForeignKey(cursoModel, on_delete=models.CASCADE, related_name='curso_teacher',null=True,blank=True)
+    estudiantes= models.ManyToManyField('estudianteModel',blank=True,null=True)
+    cursos = models.ManyToManyField(cursoModel,blank=True,null=True)
     created_at = models.DateTimeField(auto_now=True)
     estado = models.CharField(max_length=15)
     contrasena = models.CharField(max_length=90, blank=True,null=True)
@@ -70,7 +71,7 @@ class profesorModel(models.Model):
     
     
     def __str__(self) -> str:
-        return self.nombre
+        return str(self.id)
 
 class estudianteModel(models.Model):
     nombre = models.CharField(max_length=60)
@@ -82,13 +83,13 @@ class estudianteModel(models.Model):
     telefono = models.IntegerField()
     estado = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now=True)
-    id_curso = models.ForeignKey(cursoModel, on_delete=models.CASCADE , related_name='estudent_curso',null=True,blank=True)
-    id_profesor = models.ForeignKey(profesorModel, on_delete=models.CASCADE, related_name='estudiante_teacher',null=True,blank=True)
-    contrasena= models.CharField(max_length=90, blank=True, null=True)
+    cursos = models.ManyToManyField(cursoModel,blank=True,null=True)
+    profesores = models.ManyToManyField(profesorModel, blank=True,null=True)
+    contrasena= models.CharField(max_length=200, blank=True, null=True)
     rol = models.CharField(max_length=20, blank=True,null=True)
     
     def __str__(self) -> str:
-        return self.nombre
+        return str(self.id)
     
     
 

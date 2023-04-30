@@ -9,6 +9,8 @@ packages = [{include = "administracion_escolar"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^4.2"
+dj-database-url = "^2.0.0"
+psycopg2-binary = "^2.9.6"
 
 
 [build-system]
