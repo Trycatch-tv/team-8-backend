@@ -9,5 +9,5 @@ pip install uvicorn
 pip install -r requirements.txt
 
 
-python manage.py makemigrations
-python manage.py migrate
+python ./bin/manage.py makemigrations
+python ./bin/manage.py migrate
