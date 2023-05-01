@@ -28,7 +28,7 @@ THIRDS_APPS=[
 
 INSTALLED_APPS = list(chain(DJANGO_APPS,LOCAL_APPS,THIRDS_APPS))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['administration-sc.onrender.com']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
