@@ -16,9 +16,9 @@ urlpatterns=[
         path('update_teacher/<int:pk>/', update_teacher.as_view(), name='update_teacher'),
         path('update_course/<int:pk>/', update_course.as_view(), name='update_course'),
         #Delete Urls Actions
-        #path('delete_student/<int:pk>/', delete_student.as_view()),
+        path('delete_student/<int:pk>/', delete_student.as_view()),
         path('delete_teacher/<int:pk>/', delete_teacher.as_view(), name="delete_teacher"),
-        #path('delete_course/<int:pk>/', delete_course.as_view()),
+        path('delete_course/<int:pk>/', delete_course.as_view()),
         #Login 
         path('user-login/', UserLoginAPIView.as_view(), name='user_login_api'),
         path('student-login/', StudentLoginView.as_view(), name='student_login_api'),
