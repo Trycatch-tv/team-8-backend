@@ -93,7 +93,7 @@ class update_teacher(RetrieveUpdateAPIView):
 
 
 
-"""
+
 class delete_student(DestroyAPIView):
     queryset = estudianteModel.objects.all()
     serializer_class = student_serializers
@@ -109,7 +109,7 @@ class delete_course(DestroyAPIView):
     queryset = cursoModel.objects.all()
     serializer_class = course_serializers
     
-"""
+
 
 
 class delete_teacher(APIView):
