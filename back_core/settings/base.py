@@ -50,7 +50,7 @@ MIDDLEWARE = [
                
 CORS_ORIGIN_ALLOW_ALL = False
 
-
+ALLOWED_HOSTS = ["localhost",]
 
 #CORS_ORIGIN_ALLOW = True
 
