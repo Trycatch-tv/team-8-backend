@@ -1,12 +1,12 @@
 from .config_vars  import *
-from .local import *
+from .production import *
 from itertools import chain
 
 
 # Application definition
 
 DJANGO_APPS=[
-     'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -17,11 +17,13 @@ DJANGO_APPS=[
 
 LOCAL_APPS=[
     'apps.administration_sc',
+    'apps.account_settings',
 ]
 
 THIRDS_APPS=[
     'rest_framework',
     'dotenv',
+    'drf_yasg',
 ]
 
 
@@ -46,16 +48,17 @@ MIDDLEWARE = [
 
 
 
-
+ALLOWED_HOSTS = [
+    "localhost",
+]
                
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
-ALLOWED_HOSTS = ["localhost",]
 
 #CORS_ORIGIN_ALLOW = True
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:4200',
+    'http://0.0.0.0:80',
 ]
 
 

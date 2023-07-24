@@ -120,7 +120,7 @@ class delete_teacher(APIView):
             my_model = profesorModel.objects.get(pk=pk)
             my_model.delete()
             response = HttpResponse(status=204)
-            response['Access-Control-Allow-Origin'] = 'http://localhost:4200'
+            response['Access-Control-Allow-Origin'] = 'http://localhost:80'
             return response
         except profesorModel.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -204,7 +204,6 @@ class StudentLoginView(APIView):
 
         # Autentica al estudiante utilizando su correo electrónico y contraseña
         estudiante = EstudianteBackend.authenticate_student(self,request,correo=email,contrasena=password)
-        
         print(estudiante)
 
         if estudiante is not None:
@@ -239,9 +238,6 @@ class TeacherLoginView(APIView):
 
 
 # Helpers 
-
-
-
 class TeacherStudent(ListAPIView):
     serializer_class = student_serializers
 
@@ -277,7 +273,6 @@ def agregar_curso_profesor_a_estudiante(request):
     id_estudiante = request.data.get('studiantes')
     
     
-    print(id_estudiante)
     
     curso = cursoModel.objects.get(id=id_curso)
     curso.estudiantes.add(id_estudiante)
@@ -296,7 +291,7 @@ def agregar_curso_profesor_a_estudiante(request):
 
 
     # Retornar una respuesta exitosa
-    return Response({'mensaje': 'Curso y profesor agregados al estudiante exitosamente.'})
+    return Response({'mensaje': 'Curso y profesor agregados al estudiante exitosamente.'},status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -313,7 +308,7 @@ def agregar_curso_profesor(request):
     teacher.cursos.add(id_curso)
     
     
-    return Response({'mensaje': 'Curso y profesor agregados al estudiante exitosamente.'})
+    return Response({'mensaje': 'Curso y profesor agregados al estudiante exitosamente.'},status=status.HTTP_200_OK)
 
     
 
