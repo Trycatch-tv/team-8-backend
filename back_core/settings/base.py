@@ -1,5 +1,6 @@
 from .config_vars  import *
-from .production import *
+#from .production import *
+from .local import *
 from itertools import chain
 
 
