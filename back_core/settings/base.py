@@ -19,13 +19,23 @@ DJANGO_APPS=[
 LOCAL_APPS=[
     'apps.administration_sc',
     'apps.account_settings',
+    'apps.confimation_email',
+    'apps.roles.student',
+    'apps.roles.users_roles'
 ]
 
 THIRDS_APPS=[
     'rest_framework',
     'dotenv',
     'drf_yasg',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+
 ]
+
 
 
 
@@ -43,8 +53,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 #    'django.contrib.sessions.middleware.SessionMiddleware',
 #    'django.contrib.auth.middleware.AuthenticationMiddleware',  
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "corsheaders.middleware.CorsPostCsrfMiddleware",
+
 ]
 
 
@@ -64,10 +75,21 @@ CORS_ORIGIN_WHITELIST = [
 
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        #'rest_framework.authentication.SessionAuthentication',  # O cualquier otro método de autenticación que prefieras
+        #'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'apps.administration_sc.auth.JWTAuthenticationWithTuUsuario',
+
+    ],
+}
+
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,5 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 AUTHENTICATION_BACKENDS = [
-'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]

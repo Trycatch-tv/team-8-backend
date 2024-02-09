@@ -18,7 +18,15 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.http import HttpResponse
 from django.http import JsonResponse
 
+from datetime import datetime, timedelta
+
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from .permissions import IsAuthenticatedEstudiante
+from .auth import JWTAuthenticationWithTuUsuario
+
 # Create your views here.
+from django.utils.http import http_date
 
 from .backend_auth.backend_student import EstudianteBackend
 from .backend_auth.backend_teacher import TeacherBackend
@@ -66,7 +74,7 @@ class update_course(RetrieveUpdateAPIView):
         course = self.queryset.filter(id=id_course).first()
         # Verifica si el objeto existe
         if not course:
-            return Response({"error": "El course no existe"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "El course no existe"}, status=status.HTwTP_404_NOT_FOUND)
         # Serializa el objeto estudiante y devuelve los datos
         serializer = self.serializer_class(course)
         return Response(serializer.data)
@@ -127,24 +135,50 @@ class delete_teacher(APIView):
 
             
 #ADD ACTIONS
-
 class add_student(CreateAPIView):
     queryset = estudianteModel.objects.all()
     serializer_class = student_serializers
-    
-    
 
-    def perform_create(self, serializer):
-        
-        print("Heyyy Hp")
-        # Obtener la contraseña del serializer
-        contrasena = serializer.validated_data.get('contrasena')
-        
-        print(contrasena)
-        
+    def post(self, request, *args, **kwargs):
+        serializer = student_serializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # Obtener la contraseña del serializer y hacer el hash
+        contrasena = serializer.validated_data.get('password')
         contrasena_hasheada = make_password(contrasena)
-        
-        serializer.save(contrasena=contrasena_hasheada)
+
+        # Guardar el estudiante en la base de datos con la contraseña hasheada
+        serializer.save(password=contrasena_hasheada)
+
+        # Crear el token de acceso (JWT)
+        estudiante = serializer.instance
+        access_token = str(RefreshToken.for_user(estudiante).access_token)
+
+        # Crear el token de actualización (Refresh Token)
+        refresh_token = str(RefreshToken.for_user(estudiante))
+
+        # Crear la respuesta personalizada con el estudiante creado y los tokens JWT
+        response_data = serializer.data
+        response_data['status'] = status.HTTP_201_CREATED  # Agregar el campo 'status' en la respuesta
+        response_data['access_token'] = access_token
+        response_data['refresh_token'] = refresh_token
+
+        # Crear la instancia de Response con los datos personalizados
+        response = Response(response_data, status=status.HTTP_201_CREATED)
+
+        # Configurar cookies para los tokens JWT
+        access_token_cookie_name = 'access_token'
+        refresh_token_cookie_name = 'refresh_token'
+
+        # Configurar el tiempo de expiración para las cookies (ajustar el max_age según sea necesario)
+        max_age = 60 * 60 * 24 * 30  # 30 días
+        expires = datetime.utcnow() + timedelta(seconds=max_age)
+
+        # Establecer las cookies en la respuesta
+        response.set_cookie(access_token_cookie_name, access_token, expires=expires, httponly=True)
+        response.set_cookie(refresh_token_cookie_name, refresh_token, expires=expires, httponly=True)
+
+        return response
 
 class add_teacher(CreateAPIView):
     queryset = profesorModel.objects.all()
@@ -168,6 +202,8 @@ class add_course(CreateAPIView):
 
 
 class UserLoginAPIView(APIView):
+    
+    """
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -186,8 +222,72 @@ class UserLoginAPIView(APIView):
                 return Response({'message': 'Esta cuenta está desactivada.'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response({'message': 'El nombre de usuario o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
-        
+       
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        if username is None or password is None:
+            return Response({'message': 'Por favor ingrese un nombre de usuario y una contraseña.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+
+                # Obtener los tokens JWT de las cookies
+                access_token = request.COOKIES.get('access_token')
+                refresh_token = request.COOKIES.get('refresh_token')
+
+                # Si los tokens no están en las cookies, generamos nuevos tokens y los establecemos en las cookies
+                if not access_token or not refresh_token:
+                    refresh = RefreshToken.for_user(user)
+                    access_token = str(refresh.access_token)
+                    refresh_token = str(refresh)
+                    response = Response({'message': 'Inicio de sesión exitoso.', 'username': user.username}, status=status.HTTP_200_OK)
+                    response.set_cookie(key='access_token', value=access_token, httponly=True)
+                    response.set_cookie(key='refresh_token', value=refresh_token, httponly=True)
+                else:
+                    response = Response({'message': 'Inicio de sesión exitoso.', 'username': user.username}, status=status.HTTP_200_OK)
+
+                return response
+            else:
+                return Response({'message': 'Esta cuenta está desactivada.'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response({'message': 'El nombre de usuario o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
+         """
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
+
 class StudentLoginView(APIView):
+    authentication_classes = [JWTAuthenticationWithTuUsuario]
+    #permission_classes = [IsAuthenticatedEstudiante]
+
+    
+    
+    def post(self, request):
+        email = request.data.get('correo')  
+        password = request.data.get('contrasena')
+
+        if email is None or password is None:
+            return Response({'message': 'Por favor ingrese un correo y una contraseña.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Busca el estudiante con el correo electrónico proporcionado
+        try:
+            student = estudianteModel.objects.get(email_unique=email)
+        except estudianteModel.DoesNotExist:
+            return Response({'message': 'El correo electrónico o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Autentica al estudiante utilizando su correo electrónico y contraseña
+        estudiante = EstudianteBackend.authenticate_student(self, request, correo=email, contrasena=password)
+
+        if estudiante is not None:
+            # Si los tokens son válidos, responder con la información del estudiante
+            return Response({'message': 'Inicio de sesión exitoso.', 'correo': student.email_unique, 'nombre': student.full_name, 'id': student.id}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'El correo electrónico o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
+"""
     def post(self, request):
         email = request.data.get('correo')
         password = request.data.get('contrasena')
@@ -211,6 +311,7 @@ class StudentLoginView(APIView):
     
         else:
             return Response({'message': 'El correo electrónico o la contraseña son incorrectos.'}, status=status.HTTP_401_UNAUTHORIZED)
+       """
         
 class TeacherLoginView(APIView):
     def post(self, request):

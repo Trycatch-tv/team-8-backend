@@ -4,8 +4,8 @@ from ..models import estudianteModel
 class EstudianteBackend(BaseBackend):
     def authenticate_student(self, request, correo=None, contrasena=None):
         try:
-            estudiante = estudianteModel.objects.get(correo=correo)
-            if check_password(contrasena,estudiante.contrasena):
+            estudiante = estudianteModel.objects.get(email_unique=correo)
+            if check_password(contrasena,estudiante.password):
                 return estudiante
         except estudianteModel.DoesNotExist:
             return None

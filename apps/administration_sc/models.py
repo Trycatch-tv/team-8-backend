@@ -26,6 +26,10 @@ class ciudad_choices(models.TextChoices):
     OPCION_10 = 'Chile', _('Chile')
     OPCION_11 = 'Panama', _('Panama')
 
+
+class type_document_choices(models.TextChoices):
+    OPCION_1 = 'TI',_('Tarjeta Identidad'),
+    OPCION_2 = 'DC',_('Cedula')
 class cursoModel(models.Model):
     nombre = models.CharField(max_length=90)
     categoria = models.CharField(
@@ -74,6 +78,20 @@ class profesorModel(models.Model):
         return str(self.id)
 
 class estudianteModel(models.Model):
+    
+    type_document = models.CharField(max_length=3,blank=True,
+        choices=type_document_choices.choices,
+    )
+    number_document = models.CharField(max_length=11,blank=True)
+    identificacion_name = models.CharField(max_length=200,blank=True)
+    full_name = models.CharField(max_length=100,blank=True)
+    email_unique = models.CharField(max_length=100,blank=True)
+    phone = models.CharField(max_length=20,blank=True)
+    departments = models.CharField(max_length=50,blank=True)
+    password = models.CharField(max_length=1000,blank=True)
+    #avatar = models.ImageField('avatar')
+    
+    """
     nombre = models.CharField(max_length=60)
     correo = models.EmailField(max_length=60)
     ciudad = models.CharField(choices=ciudad_choices.choices,
@@ -87,7 +105,7 @@ class estudianteModel(models.Model):
     profesores = models.ManyToManyField(profesorModel, blank=True,null=True)
     contrasena= models.CharField(max_length=200, blank=True, null=True)
     rol = models.CharField(max_length=20, blank=True,null=True)
-    
+    """
     def __str__(self) -> str:
         return str(self.id)
     
